@@ -1,0 +1,7 @@
+{
+  "name": "VercelCraft - Cloud Minecraft Infrastructure",
+  "description": "A high-performance management dashboard for provisioning and managing Minecraft server instances. Features AI-powered configuration optimization, real-time performance monitoring, and an automated setup wizard.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
