@@ -8,12 +8,13 @@ interface SetupWizardProps {
 }
 
 const PRESETS = [
-  { id: ServerPreset.SURVIVAL, name: 'Survival', icon: 'fa-mountain', desc: 'The classic experience with hunger and health.' },
-  { id: ServerPreset.CREATIVE, name: 'Creative', icon: 'fa-palette', desc: 'Unlimited resources and flight for builders.' },
-  { id: ServerPreset.HARDCORE, name: 'Hardcore', icon: 'fa-skull', desc: 'One life. Maximum difficulty. No second chances.' },
-  { id: ServerPreset.SKYBLOCK, name: 'Skyblock', icon: 'fa-cloud', desc: 'Survival on a floating island with limited items.' },
-  { id: ServerPreset.MINIGAMES, name: 'Minigames', icon: 'fa-gamepad', desc: 'Hub for short, competitive gaming sessions.' },
-  { id: ServerPreset.ANARCHY, name: 'Anarchy', icon: 'fa-biohazard', desc: 'No rules. No griefing protection. Pure chaos.' },
+  { id: ServerPreset.VITE, name: 'Vite', icon: 'fa-bolt', color: 'text-yellow-400', desc: 'Blazing fast web-based live map and player dashboard.' },
+  { id: ServerPreset.SURVIVAL, name: 'Survival', icon: 'fa-mountain', color: 'text-indigo-400', desc: 'The classic experience with hunger and health.' },
+  { id: ServerPreset.CREATIVE, name: 'Creative', icon: 'fa-palette', color: 'text-purple-400', desc: 'Unlimited resources and flight for builders.' },
+  { id: ServerPreset.HARDCORE, name: 'Hardcore', icon: 'fa-skull', color: 'text-red-400', desc: 'One life. Maximum difficulty. No second chances.' },
+  { id: ServerPreset.SKYBLOCK, name: 'Skyblock', icon: 'fa-cloud', color: 'text-blue-400', desc: 'Survival on a floating island with limited items.' },
+  { id: ServerPreset.MINIGAMES, name: 'Minigames', icon: 'fa-gamepad', color: 'text-green-400', desc: 'Hub for short, competitive gaming sessions.' },
+  { id: ServerPreset.ANARCHY, name: 'Anarchy', icon: 'fa-biohazard', color: 'text-orange-400', desc: 'No rules. No griefing protection. Pure chaos.' },
 ];
 
 const SetupWizard: React.FC<SetupWizardProps> = ({ onComplete }) => {
@@ -25,7 +26,7 @@ const SetupWizard: React.FC<SetupWizardProps> = ({ onComplete }) => {
     name: 'My Vercel Server',
     software: SoftwareType.PAPER,
     version: '1.21.1',
-    preset: ServerPreset.SURVIVAL,
+    preset: ServerPreset.VITE,
     ram: 4,
     cpu: 2,
     region: 'us-east',
@@ -88,18 +89,24 @@ const SetupWizard: React.FC<SetupWizardProps> = ({ onComplete }) => {
              <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">Application Preset</label>
              
              <div className="relative" ref={dropdownRef}>
-               {/* Custom Dropdown Trigger */}
+               {/* Custom Dropdown Trigger - Styled like your screenshot */}
                <button
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-4 flex items-center justify-between hover:border-zinc-700 transition-all group"
+                className="w-full bg-black border border-zinc-800 rounded-lg p-3.5 flex items-center justify-between hover:border-zinc-700 transition-all group"
                >
                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded bg-zinc-900 border border-zinc-800 flex items-center justify-center">
-                      <i className={`fas ${currentPreset.icon} text-indigo-400`}></i>
-                    </div>
-                    <span className="font-medium text-zinc-100">{currentPreset.name}</span>
+                    {config.preset === ServerPreset.VITE ? (
+                      <div className="w-6 h-6 flex items-center justify-center bg-gradient-to-br from-indigo-500 to-purple-600 rounded">
+                        <i className="fas fa-bolt text-yellow-300 text-[10px]"></i>
+                      </div>
+                    ) : (
+                      <div className="w-6 h-6 rounded bg-zinc-900 border border-zinc-800 flex items-center justify-center">
+                        <i className={`fas ${currentPreset.icon} ${currentPreset.color} text-[10px]`}></i>
+                      </div>
+                    )}
+                    <span className="text-sm font-medium text-white">{currentPreset.name}</span>
                  </div>
-                 <i className={`fas fa-chevron-down text-xs text-zinc-600 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`}></i>
+                 <i className={`fas fa-chevron-down text-[10px] text-zinc-600 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`}></i>
                </button>
 
                {/* Dropdown Menu */}
@@ -114,20 +121,22 @@ const SetupWizard: React.FC<SetupWizardProps> = ({ onComplete }) => {
                            setIsDropdownOpen(false);
                          }}
                          className={`w-full flex items-start gap-4 p-3 rounded-lg text-left transition-all ${
-                           config.preset === p.id ? 'bg-indigo-500/10' : 'hover:bg-zinc-900'
+                           config.preset === p.id ? 'bg-zinc-900/50' : 'hover:bg-zinc-900'
                          }`}
                        >
-                         <div className={`mt-1 w-8 h-8 rounded border flex items-center justify-center shrink-0 ${
-                           config.preset === p.id ? 'bg-indigo-500/20 border-indigo-500/40' : 'bg-zinc-900 border-zinc-800'
+                         <div className={`mt-0.5 w-7 h-7 rounded border flex items-center justify-center shrink-0 ${
+                           p.id === ServerPreset.VITE 
+                             ? 'bg-gradient-to-br from-indigo-500/20 to-purple-600/20 border-purple-500/30' 
+                             : (config.preset === p.id ? 'bg-zinc-800 border-zinc-600' : 'bg-zinc-950 border-zinc-800')
                          }`}>
-                           <i className={`fas ${p.icon} ${config.preset === p.id ? 'text-indigo-400' : 'text-zinc-500'}`}></i>
+                           <i className={`fas ${p.icon} ${p.id === ServerPreset.VITE ? 'text-yellow-400' : p.color} text-[10px]`}></i>
                          </div>
                          <div>
                            <div className="text-sm font-bold text-white leading-tight mb-0.5">{p.name}</div>
-                           <div className="text-[11px] text-zinc-500 leading-tight">{p.desc}</div>
+                           <div className="text-[10px] text-zinc-500 leading-tight">{p.desc}</div>
                          </div>
                          {config.preset === p.id && (
-                           <i className="fas fa-check text-indigo-500 text-[10px] ml-auto mt-1.5"></i>
+                           <i className="fas fa-check text-white text-[10px] ml-auto mt-2 opacity-50"></i>
                          )}
                        </button>
                      ))}
@@ -138,11 +147,13 @@ const SetupWizard: React.FC<SetupWizardProps> = ({ onComplete }) => {
 
              <div className="p-4 bg-zinc-950 border border-zinc-900 rounded-lg mt-8">
                <div className="flex items-center gap-2 mb-2">
-                 <i className="fas fa-circle-info text-zinc-600 text-[10px]"></i>
-                 <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Preset Summary</span>
+                 <i className={`fas ${currentPreset.id === ServerPreset.VITE ? 'fa-bolt text-yellow-400' : 'fa-circle-info text-zinc-600'} text-[10px]`}></i>
+                 <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
+                   {currentPreset.id === ServerPreset.VITE ? 'Edge-Optimized Web Portal' : 'Preset Summary'}
+                 </span>
                </div>
                <p className="text-xs text-zinc-400 leading-relaxed">
-                 The <span className="text-indigo-400 font-bold">{currentPreset.name}</span> preset will pre-configure your <code className="text-indigo-300 font-mono">server.properties</code> and initial world generation rules for optimal performance.
+                 The <span className={`${currentPreset.id === ServerPreset.VITE ? 'text-yellow-400' : 'text-indigo-400'} font-bold`}>{currentPreset.name}</span> preset {currentPreset.id === ServerPreset.VITE ? 'automatically deploys a Vite-powered web interface for your server.' : 'pre-configures your environment for optimal gameplay performance.'}
                </p>
              </div>
           </div>
@@ -228,7 +239,7 @@ const SetupWizard: React.FC<SetupWizardProps> = ({ onComplete }) => {
         </div>
       </div>
 
-      <div className="mb-8 min-h-[280px]">
+      <div className="mb-8 min-h-[300px]">
         {renderStep()}
       </div>
 

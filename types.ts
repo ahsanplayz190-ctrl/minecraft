@@ -21,7 +21,8 @@ export enum ServerPreset {
   HARDCORE = 'Hardcore',
   SKYBLOCK = 'Skyblock',
   MINIGAMES = 'Minigames',
-  ANARCHY = 'Anarchy'
+  ANARCHY = 'Anarchy',
+  VITE = 'Vite'
 }
 
 export interface ServerConfig {

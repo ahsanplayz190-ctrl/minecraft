@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { ServerStatus, ConsoleLog, ServerConfig, SoftwareType } from '../types';
+import { ServerStatus, ConsoleLog, ServerConfig, SoftwareType, ServerPreset } from '../types';
 import Console from './Console';
 import AIConsultant from './AIConsultant';
 
@@ -48,12 +48,21 @@ const Dashboard: React.FC<DashboardProps> = ({ config, onUpdateConfig }) => {
       setStatus(ServerStatus.STARTING);
       addLog("Starting Vercel server instance...");
       addLog(`Preset detected: ${config.preset}`, "INFO");
+      
+      if (config.preset === ServerPreset.VITE) {
+        addLog("Initializing Vite-Edge-Proxy for Web Portal...", "INFO");
+        addLog("Compiling HMR-enabled server assets...", "INFO");
+      }
+
       addLog("Allocating dedicated " + config.ram + "GB RAM node", "INFO");
       addLog("Pulling Docker image: " + config.software.toLowerCase() + ":" + config.version, "INFO");
       
       setTimeout(() => {
         addLog("Loading world components...", "INFO");
         addLog("Server software initialized on port 25565", "INFO");
+        if (config.preset === ServerPreset.VITE) {
+          addLog("Web Portal available at https://" + config.name.toLowerCase().replace(/\s+/g, '-') + ".vercel.app", "INFO");
+        }
         setStatus(ServerStatus.ONLINE);
         addLog("Done! (2.4s) For help, type \"help\"", "INFO");
       }, 3000);
@@ -123,7 +132,10 @@ const Dashboard: React.FC<DashboardProps> = ({ config, onUpdateConfig }) => {
             </div>
             <div className="flex justify-between items-center border-b border-zinc-800 pb-3">
               <span className="text-zinc-500 text-xs font-medium">Preset</span>
-              <span className="text-indigo-400 text-xs font-bold uppercase tracking-wide">{config.preset}</span>
+              <span className={`text-xs font-bold uppercase tracking-wide flex items-center gap-2 ${config.preset === ServerPreset.VITE ? 'text-yellow-400' : 'text-indigo-400'}`}>
+                {config.preset === ServerPreset.VITE && <i className="fas fa-bolt"></i>}
+                {config.preset}
+              </span>
             </div>
             <div className="flex justify-between items-center border-b border-zinc-800 pb-3">
               <span className="text-zinc-500 text-xs font-medium">Uptime</span>
