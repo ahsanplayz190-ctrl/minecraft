@@ -15,10 +15,20 @@ export enum SoftwareType {
   SPIGOT = 'Spigot'
 }
 
+export enum ServerPreset {
+  SURVIVAL = 'Survival',
+  CREATIVE = 'Creative',
+  HARDCORE = 'Hardcore',
+  SKYBLOCK = 'Skyblock',
+  MINIGAMES = 'Minigames',
+  ANARCHY = 'Anarchy'
+}
+
 export interface ServerConfig {
   name: string;
   software: SoftwareType;
   version: string;
+  preset: ServerPreset;
   ram: number;
   cpu: number;
   region: string;

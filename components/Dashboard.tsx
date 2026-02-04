@@ -47,6 +47,7 @@ const Dashboard: React.FC<DashboardProps> = ({ config, onUpdateConfig }) => {
     if (status === ServerStatus.OFFLINE) {
       setStatus(ServerStatus.STARTING);
       addLog("Starting Vercel server instance...");
+      addLog(`Preset detected: ${config.preset}`, "INFO");
       addLog("Allocating dedicated " + config.ram + "GB RAM node", "INFO");
       addLog("Pulling Docker image: " + config.software.toLowerCase() + ":" + config.version, "INFO");
       
@@ -119,6 +120,10 @@ const Dashboard: React.FC<DashboardProps> = ({ config, onUpdateConfig }) => {
               <span className="text-white text-xs font-mono select-all cursor-pointer hover:text-indigo-400 transition-colors">
                 {config.name.toLowerCase().replace(/\s+/g, '-')}.vercel.craft:25565
               </span>
+            </div>
+            <div className="flex justify-between items-center border-b border-zinc-800 pb-3">
+              <span className="text-zinc-500 text-xs font-medium">Preset</span>
+              <span className="text-indigo-400 text-xs font-bold uppercase tracking-wide">{config.preset}</span>
             </div>
             <div className="flex justify-between items-center border-b border-zinc-800 pb-3">
               <span className="text-zinc-500 text-xs font-medium">Uptime</span>
